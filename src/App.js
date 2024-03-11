@@ -1,10 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import RootLayout from './components/RootLayout/RootLayout';
 import MainSidebarBottom from './components/MainSidebarBottom/MainSidebarBottom';
 import RootHeader from './components/RootHeader/RootHeader';
 import { SIDEBAR_MENUS } from './constants/menu';
+import GlobalState from './pages/GlobalState/GlobalState';
 
 function App() {
   return (
@@ -13,8 +13,8 @@ function App() {
       <Routes>
         {
           SIDEBAR_MENUS.map(
-            menu => 
-            <Route key={menu.id} path={menu.path} element={menu.element}/>
+            menu =>
+              <Route key={menu.id} path={menu.path} element={menu.element} />
           )
         }
       </Routes>

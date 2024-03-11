@@ -6,7 +6,6 @@ import * as S from "./style";
 import defaultProfile from "../../assets/images/profile/default.jpeg"
 import { useNavigate } from "react-router-dom";
 
-
 /**
  * 
  * 1. 이미지 클릭시 이미지 변경가능해야함.
@@ -20,6 +19,7 @@ import { useNavigate } from "react-router-dom";
  *  저장되어야하고 페이지 로드시 불러와야함.
  * 3. RootHeader의 프로필 이미지도 변경되어야함.
  */
+
 function Mypage() {
     const [nicknameValue, handleNicknameOnChange, setNicknameValue] = useInput();
     const [nameValue, handleNameOnChange, setNameValue] = useInput();
