@@ -27,7 +27,7 @@ function PhotoAlbum() {
                         return (
                             <div key={photo.id} css={S.imageCard}>
                                 <div css={S.imageBox}>
-                                    <img src={photo.imageUrl} />
+                                    <img src={photo.dataUrl} />
                                 </div>
                             </div>
                         )

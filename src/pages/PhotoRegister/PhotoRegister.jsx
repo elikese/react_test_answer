@@ -2,6 +2,7 @@
 import * as S from "./style";
 import WideButton from "../../components/WideButton/WideButton";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 /**
  *  1. 사진 불러오기 버튼을 클릭 후 5개 이상의 이미지를 불러올 수 있어야함.
@@ -26,7 +27,7 @@ function PhotoRegister() {
     const [loadPhotoes, setloadPhotoes] = useState([]);
     const [photoSeq, setPhotoSeq] = useState([]);
     const fileRef = useRef();
-
+    const navigate = useNavigate();
     useEffect(() => {
         setloadPhotoes(() => loadPhotoes.map(photo => {
             return (
@@ -75,31 +76,6 @@ function PhotoRegister() {
         })
     }
 
-    // const handleSubmitClick = () => {
-    //     Promise.all(Promises).then(result => {
-    //         const isSave = window.confirm("사진을 저장하시겠습니까?");
-
-    //         if (!isSave) {
-    //             return;
-    //         }
-
-    //         const localStorageFiles = !localStorage.getItem("photo") ? [] : JSON.parse(localStorage.getItem("photo"));
-    //         const lastId = localStorageFiles.length === 0 ? 0 : localStorageFiles[localStorageFiles.length - 1].id;
-
-    //         const resultList = result.map((urldata, index) => {
-    //             return (
-    //                 {
-    //                     id: lastId + index + 1,
-    //                     imageUrl: urldata
-    //                 }
-    //             );
-    //         });
-    //         const concatedNewFiles = [...localStorageFiles, ...resultList];
-    //         localStorage.setItem("photo", JSON.stringify(concatedNewFiles));
-
-    //         alert("사진 저장을 완료하였습니다.");
-    //     });
-
     const handlePhotoCheck = (id) => {
         if (photoSeq.includes(id)) {
             setPhotoSeq((photoSeq) => photoSeq.filter(seq => seq !== id))
@@ -108,13 +84,39 @@ function PhotoRegister() {
         }
     }
 
-    console.log(photoSeq);
+    const handleSubmitClick = () => {
+        const isSave = window.confirm("사진을 저장하시겠습니까?");
+
+        if (!isSave) {
+            return;
+        }
+
+        const localStorageFiles = !localStorage.getItem("photo") ? [] : JSON.parse(localStorage.getItem("photo"));
+        const lastId = localStorageFiles.length === 0 ? 0 : localStorageFiles[localStorageFiles.length - 1].id;
+
+        const newPhotoes = loadPhotoes
+            .filter(photo => photo.seq !== 0)
+            .sort((a, b) => a.seq - b.seq)
+            .map((photo, index) => {
+                return (
+                    {
+                        ...photo,
+                        id: lastId + index + 1,
+                    }
+                );
+            });
+
+        const concatedNewFiles = [...localStorageFiles, ...newPhotoes];
+        localStorage.setItem("photo", JSON.stringify(concatedNewFiles));
+        alert("사진 저장을 완료하였습니다.");
+        navigate("/photo/album");
+    };
 
     return (
         <div css={S.layout}>
             <div css={S.header}>
                 <h1 css={S.title}>사진 등록하기</h1>
-                <button css={S.submitBtn}>완료</button>
+                <button css={S.submitBtn} onClick={handleSubmitClick}>완료</button>
             </div>
             <input type="file" ref={fileRef} style={{ display: "none" }} multiple={true} onChange={handleFileChange} />
             <div css={S.container}>
@@ -133,7 +135,6 @@ function PhotoRegister() {
             <WideButton text={"사진 불러오기"} onClick={() => { fileRef.current.click() }} />
         </div>
     )
-};
 
-
+}
 export default PhotoRegister;
