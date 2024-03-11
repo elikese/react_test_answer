@@ -10,6 +10,9 @@ export const layout = css`
 
 export const imageBox = css`
     box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 30px;
     border: 3px solid #666666;
     border-radius: 50%;
